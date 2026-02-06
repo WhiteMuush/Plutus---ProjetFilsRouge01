@@ -1,7 +1,17 @@
-# Define log file path
-$LogFile = "C:\Hyper-V\Deploy-PlutusInfra.log"
+# Définir le chemin du fichier journal
+$LogFile = ".\Deploy-PlutusInfra.log"
 
-# Function to write logs with timestamp
+# Fonction pour initialiser le fichier de log
+function Initialize-LogFile {
+    param([string]$LogPath)
+    
+    if (-not (Test-Path -Path $LogPath)) {
+        New-Item -Path $LogPath -ItemType File -Force | Out-Null
+        Write-Host "Fichier log créé: $LogPath"
+    }
+}
+
+# Fonction pour écrire les journaux avec horodatage
 function Write-Log {
     param(
         [string]$Message,
@@ -20,7 +30,7 @@ $MastersDiskPath = "C:\Hyper-V\Masters"
 $OsDiskPath = "C:\Hyper-v\OSDisks"
 $VSwitchName = "vSwitchName"
 
-### Liste de Machine virtuelles
+# Liste des machines virtuelles
 $ListeVMs = @(
     [PSCustomObject]@{ Nom="WINSERV-01"; Master="MasterWinSrv22.vhdx" ; Disque = "OsDisk-WinSRV-01.vhdx" ; OS="Windows" ; Ram=4GB },
     [PSCustomObject]@{ Nom="UBUNTUSRV-01"; Master="MasterUbuntu.vhdx" ; Disque = "OsDisk-UbuntuSRV-01.vhdx" ; OS="Linux" ; Ram=2GB }
@@ -28,6 +38,7 @@ $ListeVMs = @(
 
 Write-Log "Début du déploiement Plutus Infra" "INFO"
 
+# Fonction pour vérifier l'existence d'un commutateur VM
 function Test-VMSwitchExist {
     param([string]$SwitchName)
     
@@ -42,15 +53,18 @@ function Test-VMSwitchExist {
     }
 }
 
+# Créer le commutateur s'il n'existe pas
 if ((Test-VMSwitchExist -SwitchName $VSwitchName) -eq $false){
     Write-Log "Création du switch $VSwitchName" "INFO"
     New-VMSwitch -Name $VSwitchName -SwitchType Private -ErrorAction SilentlyContinue
 }
 
+# Boucle de traitement pour chaque machine virtuelle
 foreach ( $Machine in $ListeVMs ) {
     
     Write-Log "Traitement de la VM: $($Machine.Nom)" "INFO"
     
+    # Créer le disque s'il n'existe pas
     if ( (Test-Path -Path "$OsDiskPath\$($Machine.Disque)") -eq $false) {
         Write-Log "Création du disque: $($Machine.Disque)" "INFO"
         New-VHD -ParentPath $MastersDiskPath\$($Machine.Master) -Path $OsDiskPath\$($Machine.Disque) -Differencing
@@ -58,6 +72,7 @@ foreach ( $Machine in $ListeVMs ) {
         Write-Log "Le disque existe déjà: $($Machine.Disque)" "WARNING"
     }
 
+    # Créer la VM si elle n'existe pas
     Get-VM -Name $Machine.Nom -ErrorAction SilentlyContinue
     if ($? -eq $false) {
         Write-Log "Création de la VM: $($Machine.Nom)" "INFO"
@@ -71,6 +86,7 @@ foreach ( $Machine in $ListeVMs ) {
         Write-Log "La VM existe déjà: $($Machine.Nom)" "WARNING"
     }
 
+    # Configurer le firmware pour Linux
     if ($Machine.OS -eq "Linux") {
         Write-Log "Configuration du firmware Linux pour: $($Machine.Nom)" "INFO"
         Set-VMFirmware -VMName $Machine.Nom -SecureBootTemplate "MicrosoftUEFICertificateAuthority"
