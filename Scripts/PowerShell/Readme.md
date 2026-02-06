@@ -19,6 +19,16 @@ New-Item -Path "C:\Hyper-V\OSDisks" -ItemType Directory -Force
 
 Placer les disques Master dans `C:\Hyper-V\Masters\` selon la configuration.
 
+## Attention - Script non signé
+
+Avant de lancer le script, vous devez autoriser son exécution. Par défaut, PowerShell bloque les scripts non signés.
+
+Exécutez cette commande en tant qu'Administrateur pour autoriser l'exécution :
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
 ## Utilisation
 
 1. Exécuter en tant qu'Administrateur
@@ -28,6 +38,10 @@ Placer les disques Master dans `C:\Hyper-V\Masters\` selon la configuration.
 ```powershell
 .\DeployVMs.ps1
 ```
+
+**Note :** Cette configuration n'affecte que votre utilisateur actuel.
+
+
 
 ## Configuration
 
@@ -47,8 +61,6 @@ $ListeVMs = @(
 
 ## Commandes utiles
 
-| Commande | Description |
-|----------|-------------|
-| `Start-VM -Name "NomDeLaVM"` | Démarrer une VM |
-| `Stop-VM -Name "NomDeLaVM"` | Arrêter une VM |
-| `Get-VM` | Lister les VMs |
+`Start-VM -Name "NomDeLaVM"` Démarrer une VM 
+`Stop-VM -Name "NomDeLaVM"` Arrêter une VM 
+`Get-VM` Lister les VM
