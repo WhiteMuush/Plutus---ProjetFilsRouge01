@@ -57,7 +57,7 @@ function sync_files(){
             mv "$file" "$ARCHIVE_DIR/"
             log "Fichier transféré et archivé avec succès: $filename"
         else
-            # Enregistre lerreur si le transfert échoue
+            # Enregistre l erreur si le transfert échoue
             log "Erreur: Échec du transfert du fichier: $filename"
         fi
     done
