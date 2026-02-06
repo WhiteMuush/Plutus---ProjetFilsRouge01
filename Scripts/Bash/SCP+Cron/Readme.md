@@ -30,7 +30,7 @@ Crée le répertoire d'archivage s'il n'existe pas.
 ### `main()`
 Orchestre l'exécution du script de manière séquentielle.
 
-## Utilisation dans le cron (Execution toute les 5 minues)
+## Utilisation dans le cron (Execution toute les 5 minutes)
 Veuillez à bien ajouter le droit d'execution au script bash: 
 ```bash
 chmod +x sync_plutus.sh
