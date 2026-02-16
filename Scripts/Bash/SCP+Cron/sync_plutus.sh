@@ -22,14 +22,6 @@ function log(){
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
 }
 
-# Fonction pour créer le fichier de log s il n'existe pas
-function create_log_file(){
-    if [ ! -f "$LOG_FILE" ]; then
-        touch "$LOG_FILE"
-        log "Fichier de log créé: $LOG_FILE"
-    fi
-}
-
 # Fonction pour créer le répertoire d archive s il n'existe pas
 function create_archive_dir(){
     if [ ! -d "$ARCHIVE_DIR" ]; then
@@ -65,7 +57,6 @@ function sync_files(){
 
 # Fonction principale pour orchestrer l'exécution du script
 function main(){
-    create_log_file
     create_archive_dir
     sync_files
 }
