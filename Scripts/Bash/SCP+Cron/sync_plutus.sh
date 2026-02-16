@@ -3,7 +3,7 @@
 # Ce script synchronise les fichiers JSON vers le serveur distant via SCP, puis archive les fichiers traités localement.
 
 # Définit le répertoire source contenant les fichiers de commandes
-COMMANDES_DIR="/var/www/plutusweb/commandes"              
+COMMANDES_DIR="/var/www/plutusweb/commandes"
 
 # Définit le répertoire d archive pour les fichiers traités
 ARCHIVE_DIR="/var/www/plutusweb/archives"
@@ -15,7 +15,6 @@ REMOTE_DIR="C:/Temp/Commandes"
 
 # Chemin du fichier de log pour suivre l execution du script
 LOG_FILE="./sync_plutus.log"
-
 
 # Fonction pour enregistrer les messages avec horodatage
 function log(){
