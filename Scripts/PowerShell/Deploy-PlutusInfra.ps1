@@ -1,6 +1,15 @@
 # Définir le chemin du fichier journal
 $LogFile = ".\Deploy-PlutusInfra.log"
 
+# Définir le chemin vers le disque Master
+$MastersDiskPath = "C:\Hyper-V\Masters"
+
+# Définir le chemin où seront stockés les disques Différenciels
+$OsDiskPath = "C:\Hyper-v\OSDisks"
+
+# Définir le nom du switch virtuel
+$VSwitchName = "vSwitchName"
+
 # Fonction pour initialiser le fichier de log
 function Initialize-LogFile {
     param([string]$LogPath)
@@ -26,9 +35,6 @@ function Write-Log {
     Write-Host $LogEntry
 }
 
-$MastersDiskPath = "C:\Hyper-V\Masters"
-$OsDiskPath = "C:\Hyper-v\OSDisks"
-$VSwitchName = "vSwitchName"
 
 # Liste des machines virtuelles
 $ListeVMs = @(
