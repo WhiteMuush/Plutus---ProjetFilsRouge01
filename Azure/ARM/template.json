@@ -1,0 +1,182 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+    "vmNameWin": {
+      "type": "string",
+      "defaultValue": "WINSERV-01"
+    },
+    "vmNameLinux": {
+      "type": "string",
+      "defaultValue": "UBUNTUSRV-01"
+    }
+  },
+
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-04-01",
+      "name": "vSwitchPrivate",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "192.168.10.0/24"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "vSwitchPrivateSubnet",
+            "properties": {
+              "addressPrefix": "192.168.10.0/24"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2023-04-01",
+      "name": "AdresseReseauWin",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "192.168.10.10",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'vSwitchPrivate', 'default')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "vSwitchPrivate"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2023-04-01",
+      "name": "AdresseReseauLinux",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "192.168.10.20",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'vSwitchPrivate', 'default')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "vSwitchPrivate"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-01-01",
+      "name": "[parameters('vmNameWin')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_DS1_v2"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2022-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          }
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmNameWin')]",
+          "adminUsername": "Administrateur",
+          "adminPassword": "KeyVaultSecret"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'AdresseReseauWin')]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "AdresseReseauWin"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-01-01",
+      "name": "[parameters('vmNameLinux')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_DS1_v2"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "24_04-lts-gen2",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          }
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmNameLinux')]",
+          "adminUsername": "Administrateur",
+          "adminPassword": "KeyVaultSecret"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'AdresseReseauLinux')]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "AdresseReseauLinux"
+      ]
+    },
+    {
+    "type": "Microsoft.Network/networkSecurityGroups",
+    "apiVersion": "2023-04-01",
+    "name": "nsg-ssh",
+    "location": "[resourceGroup().location]",
+    "properties": {
+    "securityRules": [
+      {
+        "name": "AllowSSH",
+        "properties": {
+            "protocol": "Tcp",
+            "sourcePortRange": "*",
+            "destinationPortRange": "22",
+            "sourceAddressPrefix": "192.168.10.20",
+            "destinationAddressPrefix": "192.168.10.10",
+            "access": "Allow",
+            "priority": 1000,
+            "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
