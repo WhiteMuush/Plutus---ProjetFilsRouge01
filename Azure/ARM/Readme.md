@@ -8,18 +8,7 @@ Ce template ARM déploie une infrastructure réseau et deux machines virtuelles 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│  Virtual Network (192.168.10.0/24)      │
-├─────────────────────────────────────────┤
-│  ┌──────────────────────────────────┐   │
-│  │  WINSERV-01 (192.168.10.10)      │   │
-│  │  Windows Server 2022             │   │
-│  └──────────────────────────────────┘   │
-│  ┌──────────────────────────────────┐   │
-│  │  UBUNTUSRV-01 (192.168.10.20)    │   │
-│  │  Ubuntu 24.04 LTS                │   │
-│  └──────────────────────────────────┘   │
-└─────────────────────────────────────────┘
+<img width="1562" height="1446" alt="SchemaAzure drawio" src="https://github.com/user-attachments/assets/7bfc8f0d-1e3e-4dab-aaf1-ea7fc4c9055c" />
 ```
 
 ## Ressources déployées
