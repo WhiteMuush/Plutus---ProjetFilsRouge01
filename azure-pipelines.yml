@@ -1,0 +1,17 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+
+- script: |
+    git remote add github https://$(GITHUB_TOKEN)@github.com/WhiteMuush/Plutus---ProjetFilsRouge01.git
+    git fetch github
+    git merge github/main
+    git push origin main
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+  displayName: Sync from GitHub
