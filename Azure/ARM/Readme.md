@@ -7,9 +7,7 @@ Ce template ARM déploie une infrastructure réseau et deux machines virtuelles 
 
 ## Architecture
 
-```
-<img width="1562" height="1446" alt="SchemaAzure drawio" src="https://github.com/user-attachments/assets/7bfc8f0d-1e3e-4dab-aaf1-ea7fc4c9055c" />
-```
+<img width="1562" height="1446" alt="SchemaAzure drawio" src="https://github.com/user-attachments/assets/f25e0608-8a81-4c3a-8dae-b3dd943011c9" />
 
 ## Ressources déployées
 
@@ -18,8 +16,8 @@ Ce template ARM déploie une infrastructure réseau et deux machines virtuelles 
 - **Plage CIDR** : 192.168.10.0/24
 
 ### Interfaces Réseau
-- **Windows** : `AdresseReseauWin` (192.168.10.10)
-- **Linux** : `AdresseReseauLinux` (192.168.10.20)
+- **Windows** : `AdresseReseauWin` (192.168.10.20)
+- **Linux** : `AdresseReseauLinux` (192.168.10.10)
 
 ### Machines Virtuelles
 - **Windows** : `WINSERV-01` (Standard_DS1_v2)
