@@ -7,7 +7,8 @@ Ce template ARM déploie une infrastructure réseau et deux machines virtuelles 
 
 ## Architecture
 
-<img width="781" height="723" alt="SchemaAzure drawio" src="https://github.com/user-attachments/assets/1ea0d018-adba-44f1-a683-dc6e1230d886" />
+<img width="781" height="723" alt="SchemaAzure drawio" src="https://github.com/user-attachments/assets/53be3eb0-c01a-481c-b635-19876b0e73dd" />
+
 
 ## Ressources déployées
 
