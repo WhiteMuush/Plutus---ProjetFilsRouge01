@@ -45,7 +45,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "192.168.10.10",
+              "privateIPAddress": "192.168.10.20",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'vSwitchPrivate', 'default')]"
@@ -68,7 +68,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "192.168.10.20",
+              "privateIPAddress": "192.168.10.10",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'vSwitchPrivate', 'default')]"
